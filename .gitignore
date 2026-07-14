@@ -1,0 +1,21 @@
+# Docker volumes / Database data
+volumes/
+*/volumes/
+data/
+db/
+pgdata/
+
+# Environments
+.env
+.venv/
+venv/
+env/
+__pycache__/
+
+# OS/IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log
