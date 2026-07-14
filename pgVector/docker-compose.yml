@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.0-pg16
+    container_name: intellidata-postgres-pgvector
+    restart: always
+    environment:
+      POSTGRES_DB: intellidata
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    ports:
+      - "5434:5432"
+    volumes:  
+      - postgres_data:/var/lib/postgresql/data
+      - ./setup-pgvector.sql:/docker-entrypoint-initdb.d/setup-pgvector.sql
+    networks:
+      - intellidata-network
+
+  admin:
+    image: adminer
+    container_name: intellidata-adminer
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "8085:8080"
+    networks:
+      - intellidata-network
+
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: intellidata-redis
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - intellidata-network
+
+volumes:
+  postgres_data:
+
+networks:
+  intellidata-network:
+    driver: bridge

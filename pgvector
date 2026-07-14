@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  pgvector-db:
+    image: tensorchord/pgvecto-rs:pg16-v0.2.0
+    container_name: pgvector-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5433:5432"  # Host:Container
+    volumes:
+      - pgvecto_data:/var/lib/postgresql/data  # ✅ updated name
+
+  pgvector-adminer:
+    image: adminer
+    container_name: pgvector-adminer
+    restart: unless-stopped
+    ports:
+      - "8081:8080"  # Changed Adminer port
+    depends_on:
+      - pgvector-db
+
+volumes:
+  pgvecto_data:  # ✅ matched volume name
